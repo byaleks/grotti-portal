@@ -782,7 +782,7 @@
     <div class="header-meta">
       <div class="odo-display" id="odoDisplay" title="Click to update current odometer">
         <div class="odo-label">Current ODO</div>
-        <div class="odo-value" id="odoValue">842</div>
+        <div class="odo-value" id="odoValue">—</div>
         <div class="odo-unit">mi</div>
       </div>
       <div class="status-pill">
@@ -811,7 +811,7 @@
         <div class="stat-label">Target Mileage</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value"><span id="heroLogged">842</span><span class="unit">mi</span></div>
+        <div class="stat-value"><span id="heroLogged">—</span><span class="unit">mi</span></div>
         <div class="stat-label">Logged to Date</div>
       </div>
       <div class="stat-item">
@@ -819,7 +819,7 @@
         <div class="stat-label">Remaining</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value">6</div>
+        <div class="stat-value"><span id="heroDrivers">6</span></div>
         <div class="stat-label">Test Drivers</div>
       </div>
     </div>
@@ -883,11 +883,11 @@
       <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.04);">
         <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Completion Progress</div>
         <div style="height:8px;background:var(--carbon-600);border-radius:4px;">
-          <div style="height:100%;width:33.7%;background:linear-gradient(90deg,var(--rosso-corsa),var(--rosso-glow));border-radius:4px;transition:width 1s ease;" id="progressBar"></div>
+          <div style="height:100%;width:0%;background:linear-gradient(90deg,var(--rosso-corsa),var(--rosso-glow));border-radius:4px;transition:width 1s ease;" id="progressBar"></div>
         </div>
         <div style="display:flex;justify-content:space-between;margin-top:0.4rem;">
-          <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--carbon-400);" id="progressText">842 / 2,500 mi</span>
-          <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--rosso-glow);" id="progressPct">33.7%</span>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--carbon-400);" id="progressText">Loading…</span>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--rosso-glow);" id="progressPct">—</span>
         </div>
       </div>
     </div>
@@ -1069,8 +1069,8 @@
       <span id="dmgStatus" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--carbon-400);margin-left:0.5rem;"></span>
     </div>
 
-    <!-- Sample logged entries -->
-    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.04);">
+    <!-- Live entries from Google Sheet -->
+    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.04);" id="dmgRecentSection">
       <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;">Recent Entries</div>
       <table class="data-table" style="margin-top:0;">
         <thead>
@@ -1081,24 +1081,9 @@
             <th>Driver</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="dmgRecentBody">
           <tr>
-            <td style="font-family:var(--font-mono);font-size:0.8rem;">02/18</td>
-            <td>Suspension — Rear</td>
-            <td><span class="severity-badge medium">● Medium</span></td>
-            <td>Marcus R.</td>
-          </tr>
-          <tr>
-            <td style="font-family:var(--font-mono);font-size:0.8rem;">02/15</td>
-            <td>Body Panel — Side</td>
-            <td><span class="severity-badge low">● Low</span></td>
-            <td>Jay T.</td>
-          </tr>
-          <tr>
-            <td style="font-family:var(--font-mono);font-size:0.8rem;">02/12</td>
-            <td>Brakes — Front</td>
-            <td><span class="severity-badge high">● High</span></td>
-            <td>Derek L.</td>
+            <td colspan="4" style="text-align:center;color:var(--carbon-400);font-style:italic;padding:1.5rem;">Loading from spreadsheet…</td>
           </tr>
         </tbody>
       </table>
@@ -1244,6 +1229,8 @@
   // 'https://script.google.com/macros/s/AKfycbx.../exec'
   // ═══════════════════════════════════════════════════════════
 
+  const TARGET_MILEAGE = 2500;
+
   // Set header date
   document.getElementById('headerDate').textContent = new Date().toLocaleDateString('en-US', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
@@ -1261,32 +1248,118 @@
     });
   }
 
-  // ─── Current Odometer ───
-  let currentOdo = 842;
+  // ─── Current Odometer (will be overwritten by sheet data) ───
+  let currentOdo = 0;
 
+  function updateOdoDisplay(odo) {
+    currentOdo = odo;
+    document.getElementById('odoValue').textContent = odo.toLocaleString();
+    document.getElementById('heroLogged').textContent = odo.toLocaleString();
+    const pct = Math.min((odo / TARGET_MILEAGE) * 100, 100).toFixed(1);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressText').textContent = odo.toLocaleString() + ' / ' + TARGET_MILEAGE.toLocaleString() + ' mi';
+    document.getElementById('progressPct').textContent = pct + '%';
+  }
+
+  // Manual ODO override (click header display)
   document.getElementById('odoDisplay').addEventListener('click', function() {
     const newVal = prompt('Update current odometer reading:', currentOdo);
     if (newVal !== null && !isNaN(newVal) && Number(newVal) >= 0) {
-      currentOdo = Number(newVal);
-      document.getElementById('odoValue').textContent = currentOdo.toLocaleString();
-      document.getElementById('heroLogged').textContent = currentOdo.toLocaleString();
-      const pct = Math.min((currentOdo / 2500) * 100, 100).toFixed(1);
-      document.getElementById('progressBar').style.width = pct + '%';
-      document.getElementById('progressText').textContent = currentOdo.toLocaleString() + ' / 2,500 mi';
-      document.getElementById('progressPct').textContent = pct + '%';
+      updateOdoDisplay(Number(newVal));
       document.querySelectorAll('.odo-start-input').forEach(input => {
         if (!input.value) input.value = currentOdo;
       });
     }
   });
 
+  // Auto-fill ODO Start on focus
   document.querySelectorAll('.odo-start-input').forEach(input => {
     input.addEventListener('focus', function() {
       if (!this.value) this.value = currentOdo;
     });
   });
 
-  // ─── Generic POST helper ───
+  // ─── LOAD LIVE DATA FROM GOOGLE SHEET ───
+  async function loadDashboardData() {
+    if (API_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+      console.warn('API_URL not configured — using placeholder data');
+      updateOdoDisplay(0);
+      renderDamageEntries([]);
+      return;
+    }
+
+    try {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+
+      if (data.error) {
+        console.error('API error:', data.error);
+        return;
+      }
+
+      // Update ODO from latest telemetry
+      if (data.telemetry) {
+        updateOdoDisplay(data.telemetry.currentOdo || 0);
+        document.getElementById('heroDrivers').textContent = data.telemetry.driverCount || 0;
+      }
+
+      // Render damage entries
+      if (data.damage) {
+        renderDamageEntries(data.damage);
+      }
+
+    } catch (err) {
+      console.error('Failed to load dashboard data:', err);
+    }
+  }
+
+  // ─── RENDER DAMAGE ENTRIES ───
+  function renderDamageEntries(entries) {
+    const tbody = document.getElementById('dmgRecentBody');
+
+    if (!entries || entries.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--carbon-400);font-style:italic;padding:1.5rem;">No damage reports yet</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = '';
+    entries.forEach(entry => {
+      const tr = document.createElement('tr');
+
+      // Parse date from timestamp
+      let dateStr = '';
+      try {
+        const d = new Date(entry.timestamp);
+        dateStr = String(d.getMonth() + 1).padStart(2, '0') + '/' + String(d.getDate()).padStart(2, '0');
+      } catch(e) {
+        dateStr = entry.timestamp.substring(0, 5);
+      }
+
+      // Determine severity class
+      const sevText = (entry.severity || '').toLowerCase();
+      let sevClass = 'low';
+      if (sevText.includes('critical') || sevText.includes('high') || sevText.includes('safety') || sevText.includes('immediate')) {
+        sevClass = 'high';
+      } else if (sevText.includes('medium') || sevText.includes('notable')) {
+        sevClass = 'medium';
+      }
+
+      // Severity display text (short version)
+      let sevLabel = 'Low';
+      if (sevClass === 'high') sevLabel = 'High';
+      else if (sevClass === 'medium') sevLabel = 'Medium';
+
+      tr.innerHTML = `
+        <td style="font-family:var(--font-mono);font-size:0.8rem;">${dateStr}</td>
+        <td>${entry.component || '—'}</td>
+        <td><span class="severity-badge ${sevClass}">\u25CF ${sevLabel}</span></td>
+        <td>${entry.driver || '—'}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ─── GENERIC POST HELPER ───
   async function postToSheet(payload, statusElId) {
     const statusEl = document.getElementById(statusElId);
     if (API_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
@@ -1304,8 +1377,13 @@
         body: JSON.stringify(payload)
       });
       statusEl.style.color = 'var(--success)';
-      statusEl.textContent = '\u2713 Submitted successfully';
-      setTimeout(() => { statusEl.textContent = ''; }, 4000);
+      statusEl.textContent = '\u2713 Submitted — refreshing\u2026';
+      // Reload dashboard data after a short delay to let the sheet update
+      setTimeout(async () => {
+        await loadDashboardData();
+        statusEl.textContent = '\u2713 Done';
+        setTimeout(() => { statusEl.textContent = ''; }, 3000);
+      }, 2000);
       return true;
     } catch (err) {
       statusEl.style.color = 'var(--danger)';
@@ -1315,7 +1393,7 @@
     }
   }
 
-  // ─── Telemetry Submit ───
+  // ─── TELEMETRY SUBMIT ───
   async function submitTelemetry() {
     const tbody = document.getElementById('telemetryBody');
     const rowEls = tbody.querySelectorAll('tr');
@@ -1351,7 +1429,7 @@
     }
   }
 
-  // ─── Damage Submit ───
+  // ─── DAMAGE SUBMIT ───
   async function submitDamage() {
     const component = document.getElementById('dmgComponent').value;
     const severity = document.getElementById('dmgSeverity').value;
@@ -1374,7 +1452,7 @@
     }
   }
 
-  // ─── Aero Submit ───
+  // ─── AERO SUBMIT ───
   async function submitAero() {
     const testType = document.getElementById('aeroTestType').value;
     const stability = ratingValues.stabilityRating;
@@ -1395,7 +1473,7 @@
     }
   }
 
-  // ─── Add Telemetry Row ───
+  // ─── ADD TELEMETRY ROW ───
   function addTelemetryRow() {
     const tbody = document.getElementById('telemetryBody');
     const newRow = document.createElement('tr');
@@ -1414,6 +1492,9 @@
       if (!this.value) this.value = currentOdo;
     });
   }
+
+  // ─── INIT: Load live data on page load ───
+  loadDashboardData();
 </script>
 
 </body>
