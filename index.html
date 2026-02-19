@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grotti Prototype Validation Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rosso-corsa: #DC143C;
+    --rosso-deep: #A00E2B;
+    --rosso-glow: #FF2D55;
+    --carbon-900: #0A0A0A;
+    --carbon-800: #141414;
+    --carbon-700: #1E1E1E;
+    --carbon-600: #2A2A2A;
+    --carbon-500: #3A3A3A;
+    --carbon-400: #555;
+    --carbon-300: #888;
+    --carbon-200: #BBB;
+    --carbon-100: #E0E0E0;
+    --gold-accent: #C9A84C;
+    --gold-light: #E8D48B;
+    --success: #2ECC71;
+    --warning: #F39C12;
+    --danger: #E74C3C;
+    --font-display: 'Bodoni Moda', serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--carbon-900);
+    color: var(--carbon-100);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* Carbon fiber background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.01) 2px,
+        rgba(255,255,255,0.01) 4px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.01) 2px,
+        rgba(255,255,255,0.01) 4px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(180deg, rgba(10,10,10,0.98) 0%, rgba(10,10,10,0.92) 100%);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(220,20,60,0.2);
+    padding: 0 2rem;
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+
+  .logo-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo-mark {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--rosso-corsa), var(--rosso-deep));
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: white;
+    letter-spacing: -1px;
+    box-shadow: 0 0 20px rgba(220,20,60,0.3);
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .logo-text .brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: white;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .logo-text .sub {
+    font-size: 0.65rem;
+    color: var(--carbon-300);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(46,204,113,0.1);
+    border: 1px solid rgba(46,204,113,0.25);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--success);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(46,204,113,0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(46,204,113,0); }
+  }
+
+  .header-date {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--carbon-400);
+  }
+
+  /* ─── ODOMETER DISPLAY ─── */
+  .odo-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(220,20,60,0.08);
+    border: 1px solid rgba(220,20,60,0.2);
+    border-radius: 8px;
+    padding: 0.35rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .odo-display:hover {
+    background: rgba(220,20,60,0.14);
+    border-color: rgba(220,20,60,0.35);
+  }
+
+  .odo-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--carbon-400);
+  }
+
+  .odo-value {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    letter-spacing: 1px;
+  }
+
+  .odo-unit {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--carbon-400);
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* ─── SECTION CARDS ─── */
+  .section-card {
+    background: linear-gradient(145deg, rgba(20,20,20,0.9), rgba(14,14,14,0.95));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.6s ease-out both;
+  }
+
+  .section-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--rosso-corsa), transparent);
+    border-radius: 4px 0 0 4px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-card:nth-child(2) { animation-delay: 0.1s; }
+  .section-card:nth-child(3) { animation-delay: 0.2s; }
+  .section-card:nth-child(4) { animation-delay: 0.3s; }
+  .section-card:nth-child(5) { animation-delay: 0.4s; }
+  .section-card:nth-child(6) { animation-delay: 0.5s; }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rosso-corsa);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .section-desc {
+    color: var(--carbon-300);
+    font-size: 0.9rem;
+    max-width: 720px;
+    line-height: 1.7;
+  }
+
+  /* ─── GRID LAYOUTS ─── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* ─── HERO / OVERVIEW ─── */
+  .hero-section {
+    position: relative;
+    padding: 3rem 2rem;
+    margin-bottom: 1.5rem;
+    border-radius: 16px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(220,20,60,0.15) 0%, transparent 60%),
+      linear-gradient(135deg, var(--carbon-800), var(--carbon-900));
+    border: 1px solid rgba(220,20,60,0.12);
+    animation: fadeUp 0.5s ease-out both;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(220,20,60,0.12);
+    border: 1px solid rgba(220,20,60,0.25);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--rosso-glow);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 900;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-title .italic {
+    font-style: italic;
+    color: var(--rosso-corsa);
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    color: var(--carbon-300);
+    max-width: 640px;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  /* Stats bar */
+  .stats-row {
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-value {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: white;
+  }
+
+  .stat-value .unit {
+    font-size: 0.75rem;
+    color: var(--carbon-400);
+    margin-left: 2px;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--carbon-400);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+
+  /* ─── VHI - Vehicle Health Index ─── */
+  .vhi-card {
+    background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(30,30,30,0.9));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.75rem;
+    text-align: center;
+  }
+
+  .vhi-ring {
+    width: 140px;
+    height: 140px;
+    margin: 1rem auto;
+    position: relative;
+  }
+
+  .vhi-ring svg {
+    transform: rotate(-90deg);
+  }
+
+  .vhi-ring .bg {
+    fill: none;
+    stroke: var(--carbon-600);
+    stroke-width: 8;
+  }
+
+  .vhi-ring .progress {
+    fill: none;
+    stroke: var(--success);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 408;
+    stroke-dashoffset: 45;
+    transition: stroke-dashoffset 1.5s ease;
+  }
+
+  .vhi-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 500;
+    color: white;
+  }
+
+  .vhi-value span {
+    font-size: 0.75rem;
+    color: var(--carbon-400);
+  }
+
+  .vhi-label {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--carbon-400);
+    margin-top: 0.5rem;
+  }
+
+  /* ─── TABLE STYLES ─── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.25rem;
+    font-size: 0.85rem;
+  }
+
+  .data-table thead th {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--carbon-400);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-weight: 500;
+  }
+
+  .data-table tbody td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    color: var(--carbon-200);
+  }
+
+  .data-table tbody tr:hover {
+    background: rgba(220,20,60,0.04);
+  }
+
+  .data-table input,
+  .data-table select {
+    background: var(--carbon-700);
+    border: 1px solid var(--carbon-500);
+    color: var(--carbon-100);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    width: 100%;
+    transition: border-color 0.2s;
+  }
+
+  .data-table input:focus,
+  .data-table select:focus {
+    outline: none;
+    border-color: var(--rosso-corsa);
+    box-shadow: 0 0 0 3px rgba(220,20,60,0.15);
+  }
+
+  /* ─── FORM INPUTS ─── */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--carbon-300);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .form-input,
+  .form-textarea,
+  .form-select {
+    width: 100%;
+    background: var(--carbon-700);
+    border: 1px solid var(--carbon-500);
+    color: var(--carbon-100);
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    transition: border-color 0.2s;
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .form-input:focus,
+  .form-textarea:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: var(--rosso-corsa);
+    box-shadow: 0 0 0 3px rgba(220,20,60,0.15);
+  }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--rosso-corsa), var(--rosso-deep));
+    color: white;
+    box-shadow: 0 4px 15px rgba(220,20,60,0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 25px rgba(220,20,60,0.45);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--carbon-300);
+    border: 1px solid var(--carbon-500);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--rosso-corsa);
+    color: var(--rosso-corsa);
+  }
+
+  /* ─── AERO HIGHLIGHT CARD ─── */
+  .aero-card {
+    background:
+      radial-gradient(ellipse at 80% 20%, rgba(220,20,60,0.08) 0%, transparent 50%),
+      linear-gradient(145deg, rgba(20,20,20,0.9), rgba(14,14,14,0.95));
+    border: 1px solid rgba(220,20,60,0.2);
+    border-radius: 12px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease-out 0.3s both;
+  }
+
+  .aero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--rosso-corsa), var(--gold-accent), var(--rosso-corsa));
+  }
+
+  .aero-card::after {
+    content: '⚠';
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    font-size: 2.5rem;
+    opacity: 0.15;
+  }
+
+  .aero-tag {
+    display: inline-block;
+    background: rgba(220,20,60,0.15);
+    border: 1px solid rgba(220,20,60,0.3);
+    color: var(--rosso-glow);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .rating-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .rating-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--carbon-700);
+    border: 1px solid var(--carbon-500);
+    border-radius: 8px;
+    color: var(--carbon-300);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .rating-btn:hover,
+  .rating-btn.active {
+    background: rgba(220,20,60,0.15);
+    border-color: var(--rosso-corsa);
+    color: var(--rosso-glow);
+  }
+
+  /* ─── CONTRACT ─── */
+  .contract-section {
+    background:
+      linear-gradient(145deg, rgba(201,168,76,0.03), rgba(14,14,14,0.95));
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    animation: fadeUp 0.6s ease-out 0.5s both;
+  }
+
+  .contract-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--gold-accent), transparent);
+    border-radius: 4px 0 0 4px;
+  }
+
+  .contract-clause {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .contract-clause:last-child { border-bottom: none; }
+
+  .clause-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--gold-accent);
+    min-width: 28px;
+    padding-top: 2px;
+  }
+
+  .clause-text {
+    color: var(--carbon-200);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* ─── DAMAGE LOG ─── */
+  .severity-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .severity-badge.low {
+    background: rgba(46,204,113,0.1);
+    color: var(--success);
+    border: 1px solid rgba(46,204,113,0.2);
+  }
+
+  .severity-badge.medium {
+    background: rgba(243,156,18,0.1);
+    color: var(--warning);
+    border: 1px solid rgba(243,156,18,0.2);
+  }
+
+  .severity-badge.high {
+    background: rgba(231,76,60,0.1);
+    color: var(--danger);
+    border: 1px solid rgba(231,76,60,0.2);
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    margin-top: 1rem;
+  }
+
+  .footer-brand {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--carbon-400);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-sub {
+    font-size: 0.7rem;
+    color: var(--carbon-500);
+    font-family: var(--font-mono);
+    letter-spacing: 2px;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .header-inner { padding: 0; }
+    .header-meta .status-pill,
+    .header-meta .header-date { display: none; }
+    .main { padding: 1rem; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .hero-section { padding: 2rem 1.5rem; }
+    .stats-row { gap: 1.5rem; }
+    .aero-card { padding: 1.5rem; }
+    .section-card { padding: 1.5rem; }
+    .data-table { font-size: 0.8rem; }
+    .data-table thead th,
+    .data-table tbody td { padding: 0.6rem 0.5rem; }
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--carbon-900); }
+  ::-webkit-scrollbar-thumb { background: var(--carbon-600); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--carbon-500); }
+</style>
+</head>
+<body>
+
+<!-- ════════════ HEADER ════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-mark">G</div>
+      <div class="logo-text">
+        <span class="brand">Grotti</span>
+        <span class="sub">Prototype Validation</span>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="odo-display" id="odoDisplay" title="Click to update current odometer">
+        <div class="odo-label">Current ODO</div>
+        <div class="odo-value" id="odoValue">842</div>
+        <div class="odo-unit">mi</div>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        Testing Active
+      </div>
+      <div class="header-date" id="headerDate"></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- ════════════ 1. PROJECT OVERVIEW / HERO ════════════ -->
+  <section class="hero-section">
+    <div class="hero-badge">◆&ensp;Confidential — Factory Test Program</div>
+    <h1 class="hero-title">
+      Prototype <span class="italic">Validation</span> Portal
+    </h1>
+    <p class="hero-subtitle">
+      Grotti Automobili has selected <strong style="color:white;">Redline Motorsports</strong> as the designated Factory Test Team for the validation phase of the upcoming re-release prototype. All telemetry, wear data, and aerodynamic feedback is to be submitted through this portal.
+    </p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-value">2,500<span class="unit">mi</span></div>
+        <div class="stat-label">Target Mileage</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value"><span id="heroLogged">842</span><span class="unit">mi</span></div>
+        <div class="stat-label">Logged to Date</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">14<span class="unit">days</span></div>
+        <div class="stat-label">Remaining</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">6</div>
+        <div class="stat-label">Test Drivers</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════ VHI + OVERVIEW GRID ════════════ -->
+  <div class="grid-2" style="margin-bottom:1.5rem;">
+    <div class="section-card">
+      <div class="section-label">SYS.001 — Vehicle Health</div>
+      <div class="section-title">Vehicle Health Index</div>
+      <p class="section-desc" style="margin-bottom:1rem;">
+        VHI decays with accumulated mileage and reported issues. Drops below 60% require a maintenance ticket submitted to Grotti Engineering.
+      </p>
+      <div style="display:flex;align-items:center;gap:2rem;">
+        <div class="vhi-ring">
+          <svg width="140" height="140" viewBox="0 0 140 140">
+            <circle class="bg" cx="70" cy="70" r="65"/>
+            <circle class="progress" cx="70" cy="70" r="65"/>
+          </svg>
+          <div class="vhi-value">89<span>%</span></div>
+        </div>
+        <div>
+          <div style="margin-bottom:0.75rem;">
+            <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;">Engine</div>
+            <div style="height:6px;background:var(--carbon-600);border-radius:3px;width:200px;max-width:100%;">
+              <div style="height:100%;width:94%;background:var(--success);border-radius:3px;"></div>
+            </div>
+          </div>
+          <div style="margin-bottom:0.75rem;">
+            <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;">Transmission</div>
+            <div style="height:6px;background:var(--carbon-600);border-radius:3px;width:200px;max-width:100%;">
+              <div style="height:100%;width:87%;background:var(--success);border-radius:3px;"></div>
+            </div>
+          </div>
+          <div style="margin-bottom:0.75rem;">
+            <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;">Suspension</div>
+            <div style="height:6px;background:var(--carbon-600);border-radius:3px;width:200px;max-width:100%;">
+              <div style="height:100%;width:78%;background:var(--warning);border-radius:3px;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;">Body/Aero</div>
+            <div style="height:6px;background:var(--carbon-600);border-radius:3px;width:200px;max-width:100%;">
+              <div style="height:100%;width:65%;background:var(--warning);border-radius:3px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-label">SYS.002 — Quick Actions</div>
+      <div class="section-title">Test Team Actions</div>
+      <p class="section-desc" style="margin-bottom:1.25rem;">Select an action below to log data or submit reports to Grotti Engineering.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+        <button class="btn btn-primary" style="justify-content:center;">+ Log Session</button>
+        <button class="btn btn-ghost" style="justify-content:center;">Report Issue</button>
+        <button class="btn btn-ghost" style="justify-content:center;">Maint. Ticket</button>
+        <button class="btn btn-ghost" style="justify-content:center;">Aero Feedback</button>
+      </div>
+      <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.04);">
+        <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Completion Progress</div>
+        <div style="height:8px;background:var(--carbon-600);border-radius:4px;">
+          <div style="height:100%;width:33.7%;background:linear-gradient(90deg,var(--rosso-corsa),var(--rosso-glow));border-radius:4px;transition:width 1s ease;" id="progressBar"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:0.4rem;">
+          <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--carbon-400);" id="progressText">842 / 2,500 mi</span>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--rosso-glow);" id="progressPct">33.7%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ 2. TELEMETRY & DATA COLLECTION ════════════ -->
+  <section class="section-card">
+    <div class="section-label">TEL.001 — Data Ingestion</div>
+    <div class="section-title">Telemetry &amp; Data Collection</div>
+    <p class="section-desc">Log session data including mileage, fuel consumption, and subjective feedback at key speed intervals. Each driver session must include an odometer start/end reading.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Driver</th>
+          <th>Date</th>
+          <th>ODO Start</th>
+          <th>ODO End</th>
+          <th>Fuel (gal)</th>
+          <th>0–60 Feel</th>
+          <th>100+ Feel</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody id="telemetryBody">
+        <tr>
+          <td><input type="text" placeholder="Full name"></td>
+          <td><input type="date"></td>
+          <td><input type="number" class="odo-start-input" placeholder="0000"></td>
+          <td><input type="number" placeholder="0000"></td>
+          <td><input type="number" step="0.1" placeholder="0.0"></td>
+          <td>
+            <select>
+              <option value="">Select</option>
+              <option>Exceptional</option>
+              <option>Strong</option>
+              <option>Adequate</option>
+              <option>Sluggish</option>
+              <option>Unstable</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option value="">Select</option>
+              <option>Planted</option>
+              <option>Confident</option>
+              <option>Neutral</option>
+              <option>Nervous</option>
+              <option>Dangerous</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Session notes..."></td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="Full name"></td>
+          <td><input type="date"></td>
+          <td><input type="number" class="odo-start-input" placeholder="0000"></td>
+          <td><input type="number" placeholder="0000"></td>
+          <td><input type="number" step="0.1" placeholder="0.0"></td>
+          <td>
+            <select>
+              <option value="">Select</option>
+              <option>Exceptional</option>
+              <option>Strong</option>
+              <option>Adequate</option>
+              <option>Sluggish</option>
+              <option>Unstable</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option value="">Select</option>
+              <option>Planted</option>
+              <option>Confident</option>
+              <option>Neutral</option>
+              <option>Nervous</option>
+              <option>Dangerous</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Session notes..."></td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="Full name"></td>
+          <td><input type="date"></td>
+          <td><input type="number" class="odo-start-input" placeholder="0000"></td>
+          <td><input type="number" placeholder="0000"></td>
+          <td><input type="number" step="0.1" placeholder="0.0"></td>
+          <td>
+            <select>
+              <option value="">Select</option>
+              <option>Exceptional</option>
+              <option>Strong</option>
+              <option>Adequate</option>
+              <option>Sluggish</option>
+              <option>Unstable</option>
+            </select>
+          </td>
+          <td>
+            <select>
+              <option value="">Select</option>
+              <option>Planted</option>
+              <option>Confident</option>
+              <option>Neutral</option>
+              <option>Nervous</option>
+              <option>Dangerous</option>
+            </select>
+          </td>
+          <td><input type="text" placeholder="Session notes..."></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:1.25rem;display:flex;gap:0.75rem;align-items:center;">
+      <button class="btn btn-primary" onclick="submitTelemetry()">Submit Session</button>
+      <button class="btn btn-ghost" onclick="addTelemetryRow()">+ Add Row</button>
+      <span id="telStatus" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--carbon-400);margin-left:0.5rem;"></span>
+    </div>
+  </section>
+
+  <!-- ════════════ 3. DAMAGE & WEAR LOG ════════════ -->
+  <section class="section-card">
+    <div class="section-label">DMG.001 — Structural Integrity</div>
+    <div class="section-title">Damage &amp; Wear Log</div>
+    <p class="section-desc">Report any mechanical issues, cosmetic damage, or abnormal wear patterns. All reports are timestamped and forwarded to Grotti Engineering for review.</p>
+
+    <div class="grid-2" style="margin-top:1.25rem;gap:1.25rem;">
+      <div>
+        <div class="form-group">
+          <label class="form-label">Component / Area</label>
+          <select class="form-select" id="dmgComponent">
+            <option value="">Select component...</option>
+            <option>Engine — Block</option>
+            <option>Engine — Exhaust</option>
+            <option>Transmission</option>
+            <option>Suspension — Front</option>
+            <option>Suspension — Rear</option>
+            <option>Brakes — Front</option>
+            <option>Brakes — Rear</option>
+            <option>Body Panel — Front</option>
+            <option>Body Panel — Side</option>
+            <option>Body Panel — Rear</option>
+            <option>Interior — Seats</option>
+            <option>Interior — Dash</option>
+            <option>Electrical</option>
+            <option>Tires / Wheels</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Severity</label>
+          <select class="form-select" id="dmgSeverity">
+            <option value="">Select severity...</option>
+            <option>Cosmetic — Minor</option>
+            <option>Cosmetic — Notable</option>
+            <option>Mechanical — Low</option>
+            <option>Mechanical — Medium</option>
+            <option>Mechanical — Critical</option>
+            <option>Safety — Immediate</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Odometer at Incident</label>
+          <input type="number" class="form-input" id="dmgOdometer" placeholder="Current mileage">
+        </div>
+      </div>
+      <div>
+        <div class="form-group">
+          <label class="form-label">Description of Issue</label>
+          <textarea class="form-textarea" id="dmgDescription" placeholder="Describe the damage, wear, or mechanical fault in detail. Include driving conditions at time of incident..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Reported By</label>
+          <input type="text" class="form-input" id="dmgDriver" placeholder="Driver name">
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:0.5rem;display:flex;gap:0.75rem;align-items:center;">
+      <button class="btn btn-primary" onclick="submitDamage()">Submit Report</button>
+      <span id="dmgStatus" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--carbon-400);margin-left:0.5rem;"></span>
+    </div>
+
+    <!-- Sample logged entries -->
+    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.04);">
+      <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;">Recent Entries</div>
+      <table class="data-table" style="margin-top:0;">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Component</th>
+            <th>Severity</th>
+            <th>Driver</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-family:var(--font-mono);font-size:0.8rem;">02/18</td>
+            <td>Suspension — Rear</td>
+            <td><span class="severity-badge medium">● Medium</span></td>
+            <td>Marcus R.</td>
+          </tr>
+          <tr>
+            <td style="font-family:var(--font-mono);font-size:0.8rem;">02/15</td>
+            <td>Body Panel — Side</td>
+            <td><span class="severity-badge low">● Low</span></td>
+            <td>Jay T.</td>
+          </tr>
+          <tr>
+            <td style="font-family:var(--font-mono);font-size:0.8rem;">02/12</td>
+            <td>Brakes — Front</td>
+            <td><span class="severity-badge high">● High</span></td>
+            <td>Derek L.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ════════════ 4. AERODYNAMICS CASE STUDY ════════════ -->
+  <section class="aero-card">
+    <div class="aero-tag">◆ Priority — Aero-Validation</div>
+    <div class="section-title" style="font-size:2rem;">Aerodynamics Validation: Missing Spoiler</div>
+    <p class="section-desc" style="margin-bottom:1.5rem;">
+      The prototype has been delivered <strong style="color:var(--rosso-glow);">without the production rear spoiler</strong>. Grotti Engineering requires comprehensive feedback on high-speed stability, rear-end grip, and downforce characteristics in this baseline configuration. This data will directly inform final spoiler geometry and wing angle for the production release.
+    </p>
+
+    <div class="grid-3" style="margin-bottom:1.5rem;">
+      <div style="background:var(--carbon-700);padding:1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);">
+        <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Test Protocol</div>
+        <div style="font-size:0.9rem;color:var(--carbon-200);font-weight:600;">G-Force Cornering</div>
+        <p style="font-size:0.8rem;color:var(--carbon-400);margin-top:0.3rem;">Perform sustained cornering at Vinewood Bowl or Airport runway. Note rear-end slide differential vs. production models.</p>
+      </div>
+      <div style="background:var(--carbon-700);padding:1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);">
+        <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Test Protocol</div>
+        <div style="font-size:0.9rem;color:var(--carbon-200);font-weight:600;">High-Speed Stability</div>
+        <p style="font-size:0.8rem;color:var(--carbon-400);margin-top:0.3rem;">Sustained 100+ MPH on highway/runway. Log any rear lightness, wander, or instability at speed.</p>
+      </div>
+      <div style="background:var(--carbon-700);padding:1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);">
+        <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Test Protocol</div>
+        <div style="font-size:0.9rem;color:var(--carbon-200);font-weight:600;">Braking Zone Pitch</div>
+        <p style="font-size:0.8rem;color:var(--carbon-400);margin-top:0.3rem;">Hard braking from 120+ MPH. Report rear lift sensation and braking distance feel compared to spoilered vehicles.</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="form-group">
+          <label class="form-label">Test Type</label>
+          <select class="form-select" id="aeroTestType">
+            <option value="">Select test protocol...</option>
+            <option>G-Force Cornering — Vinewood Bowl</option>
+            <option>G-Force Cornering — LS Airport</option>
+            <option>High-Speed Stability — Highway</option>
+            <option>High-Speed Stability — Runway</option>
+            <option>Braking Zone Pitch</option>
+            <option>Crosswind Response</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Rear-End Stability (1 = Dangerous, 10 = Planted)</label>
+          <div class="rating-group" id="stabilityRating">
+            <button class="rating-btn" onclick="setRating('stabilityRating', 1)">1</button>
+            <button class="rating-btn" onclick="setRating('stabilityRating', 2)">2</button>
+            <button class="rating-btn" onclick="setRating('stabilityRating', 3)">3</button>
+            <button class="rating-btn" onclick="setRating('stabilityRating', 4)">4</button>
+            <button class="rating-btn" onclick="setRating('stabilityRating', 5)">5</button>
+            <button class="rating-btn" onclick="setRating('stabilityRating', 6)">6</button>
+            <button class="rating-btn" onclick="setRating('stabilityRating', 7)">7</button>
+            <button class="rating-btn" onclick="setRating('stabilityRating', 8)">8</button>
+            <button class="rating-btn" onclick="setRating('stabilityRating', 9)">9</button>
+            <button class="rating-btn" onclick="setRating('stabilityRating', 10)">10</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Downforce Confidence (1 = None, 10 = Full)</label>
+          <div class="rating-group" id="downforceRating">
+            <button class="rating-btn" onclick="setRating('downforceRating', 1)">1</button>
+            <button class="rating-btn" onclick="setRating('downforceRating', 2)">2</button>
+            <button class="rating-btn" onclick="setRating('downforceRating', 3)">3</button>
+            <button class="rating-btn" onclick="setRating('downforceRating', 4)">4</button>
+            <button class="rating-btn" onclick="setRating('downforceRating', 5)">5</button>
+            <button class="rating-btn" onclick="setRating('downforceRating', 6)">6</button>
+            <button class="rating-btn" onclick="setRating('downforceRating', 7)">7</button>
+            <button class="rating-btn" onclick="setRating('downforceRating', 8)">8</button>
+            <button class="rating-btn" onclick="setRating('downforceRating', 9)">9</button>
+            <button class="rating-btn" onclick="setRating('downforceRating', 10)">10</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="form-group">
+          <label class="form-label">Detailed Feedback</label>
+          <textarea class="form-textarea" id="aeroFeedback" style="min-height:165px;" placeholder="Describe rear-end behavior during the test. Compare to production spoilered vehicles if possible. Note specific speeds where instability occurs..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:0.75rem;align-items:center;">
+      <button class="btn btn-primary" onclick="submitAero()">Submit Aero Report</button>
+      <span id="aeroStatus" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--carbon-400);margin-left:0.5rem;"></span>
+    </div>
+  </section>
+
+  <!-- ════════════ 5. CONTRACT TERMS ════════════ -->
+  <section class="contract-section">
+    <div class="section-label" style="color:var(--gold-accent);">LGL.001 — Binding Terms</div>
+    <div class="section-title">Validation Contract Terms</div>
+    <p class="section-desc" style="margin-bottom:1.25rem;">
+      The following terms govern the Factory Test Team agreement between <strong style="color:white">Grotti Automobili</strong> and <strong style="color:white">Redline Motorsports</strong>.
+    </p>
+
+    <div class="contract-clause">
+      <span class="clause-num">§1</span>
+      <span class="clause-text">Redline Motorsports ("Test Team") shall accumulate a minimum of <strong style="color:white">2,500 validated miles</strong> on the designated prototype within the testing window.</span>
+    </div>
+    <div class="contract-clause">
+      <span class="clause-num">§2</span>
+      <span class="clause-text">All telemetry sessions must be logged via the Prototype Validation Portal. Incomplete or unsigned entries will not count toward the mileage requirement.</span>
+    </div>
+    <div class="contract-clause">
+      <span class="clause-num">§3</span>
+      <span class="clause-text">A minimum of <strong style="color:white">three (3) Aero-Validation reports</strong> must be submitted with stability and downforce ratings for the spoilerless configuration.</span>
+    </div>
+    <div class="contract-clause">
+      <span class="clause-num">§4</span>
+      <span class="clause-text">The Vehicle Health Index must remain above <strong style="color:white">50%</strong> at all times. Maintenance tickets must be filed promptly for any subsystem degradation.</span>
+    </div>
+    <div class="contract-clause">
+      <span class="clause-num">§5</span>
+      <span class="clause-text"><strong style="color:var(--gold-accent)">Upon successful completion</strong> of the validation mileage, data submission requirements, and showcase obligations, <strong style="color:white">full ownership of the prototype shall be transferred to Redline Motorsports</strong>, free and clear of any liens or encumbrances.</span>
+    </div>
+
+    <div style="margin-top:1.5rem;padding:1.25rem;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.12);border-radius:8px;display:flex;align-items:center;gap:1rem;">
+      <span style="font-size:1.5rem;">📋</span>
+      <div>
+        <div style="font-size:0.85rem;color:var(--carbon-100);font-weight:600;">Digital Acknowledgement</div>
+        <div style="font-size:0.8rem;color:var(--carbon-400);margin-top:0.2rem;">Both parties have digitally acknowledged these terms. Contract ID: <span style="font-family:var(--font-mono);color:var(--gold-accent);">GRT-RDL-2026-0217</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer class="footer">
+  <div class="footer-brand">Grotti × Redline</div>
+  <div class="footer-sub">Factory Test Program — Confidential Portal v2.1.0</div>
+</footer>
+
+<script>
+  // ═══════════════════════════════════════════════════════════
+  // CONFIGURATION — Paste your Google Apps Script URL below
+  // ═══════════════════════════════════════════════════════════
+  const API_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+  // After deploying, replace with something like:
+  // 'https://script.google.com/macros/s/AKfycbx.../exec'
+  // ═══════════════════════════════════════════════════════════
+
+  // Set header date
+  document.getElementById('headerDate').textContent = new Date().toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  // ─── Rating buttons ───
+  let ratingValues = { stabilityRating: 0, downforceRating: 0 };
+
+  function setRating(groupId, value) {
+    ratingValues[groupId] = value;
+    const group = document.getElementById(groupId);
+    const buttons = group.querySelectorAll('.rating-btn');
+    buttons.forEach((btn, i) => {
+      btn.classList.toggle('active', i < value);
+    });
+  }
+
+  // ─── Current Odometer ───
+  let currentOdo = 842;
+
+  document.getElementById('odoDisplay').addEventListener('click', function() {
+    const newVal = prompt('Update current odometer reading:', currentOdo);
+    if (newVal !== null && !isNaN(newVal) && Number(newVal) >= 0) {
+      currentOdo = Number(newVal);
+      document.getElementById('odoValue').textContent = currentOdo.toLocaleString();
+      document.getElementById('heroLogged').textContent = currentOdo.toLocaleString();
+      const pct = Math.min((currentOdo / 2500) * 100, 100).toFixed(1);
+      document.getElementById('progressBar').style.width = pct + '%';
+      document.getElementById('progressText').textContent = currentOdo.toLocaleString() + ' / 2,500 mi';
+      document.getElementById('progressPct').textContent = pct + '%';
+      document.querySelectorAll('.odo-start-input').forEach(input => {
+        if (!input.value) input.value = currentOdo;
+      });
+    }
+  });
+
+  document.querySelectorAll('.odo-start-input').forEach(input => {
+    input.addEventListener('focus', function() {
+      if (!this.value) this.value = currentOdo;
+    });
+  });
+
+  // ─── Generic POST helper ───
+  async function postToSheet(payload, statusElId) {
+    const statusEl = document.getElementById(statusElId);
+    if (API_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+      statusEl.style.color = 'var(--warning)';
+      statusEl.textContent = '\u26A0 Set API_URL in the HTML first';
+      return false;
+    }
+    statusEl.style.color = 'var(--carbon-400)';
+    statusEl.textContent = 'Submitting\u2026';
+    try {
+      await fetch(API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      });
+      statusEl.style.color = 'var(--success)';
+      statusEl.textContent = '\u2713 Submitted successfully';
+      setTimeout(() => { statusEl.textContent = ''; }, 4000);
+      return true;
+    } catch (err) {
+      statusEl.style.color = 'var(--danger)';
+      statusEl.textContent = '\u2717 Failed \u2014 check console';
+      console.error('Submission error:', err);
+      return false;
+    }
+  }
+
+  // ─── Telemetry Submit ───
+  async function submitTelemetry() {
+    const tbody = document.getElementById('telemetryBody');
+    const rowEls = tbody.querySelectorAll('tr');
+    const rows = [];
+    rowEls.forEach(tr => {
+      const inputs = tr.querySelectorAll('input');
+      const selects = tr.querySelectorAll('select');
+      const driver = inputs[0]?.value?.trim();
+      if (!driver) return;
+      rows.push({
+        driver: driver,
+        date: inputs[1]?.value || '',
+        odoStart: inputs[2]?.value || '',
+        odoEnd: inputs[3]?.value || '',
+        fuel: inputs[4]?.value || '',
+        feel060: selects[0]?.value || '',
+        feel100: selects[1]?.value || '',
+        notes: inputs[5]?.value || ''
+      });
+    });
+    if (rows.length === 0) {
+      const s = document.getElementById('telStatus');
+      s.style.color = 'var(--warning)';
+      s.textContent = '\u26A0 Fill in at least one row';
+      return;
+    }
+    const ok = await postToSheet({ type: 'telemetry', rows }, 'telStatus');
+    if (ok) {
+      rowEls.forEach(tr => {
+        tr.querySelectorAll('input').forEach(i => i.value = '');
+        tr.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+      });
+    }
+  }
+
+  // ─── Damage Submit ───
+  async function submitDamage() {
+    const component = document.getElementById('dmgComponent').value;
+    const severity = document.getElementById('dmgSeverity').value;
+    const odometer = document.getElementById('dmgOdometer').value;
+    const description = document.getElementById('dmgDescription').value.trim();
+    const driver = document.getElementById('dmgDriver').value.trim();
+    if (!component || !description || !driver) {
+      const s = document.getElementById('dmgStatus');
+      s.style.color = 'var(--warning)';
+      s.textContent = '\u26A0 Fill in component, description & driver';
+      return;
+    }
+    const ok = await postToSheet({ type: 'damage', component, severity, odometer, description, driver }, 'dmgStatus');
+    if (ok) {
+      document.getElementById('dmgComponent').selectedIndex = 0;
+      document.getElementById('dmgSeverity').selectedIndex = 0;
+      document.getElementById('dmgOdometer').value = '';
+      document.getElementById('dmgDescription').value = '';
+      document.getElementById('dmgDriver').value = '';
+    }
+  }
+
+  // ─── Aero Submit ───
+  async function submitAero() {
+    const testType = document.getElementById('aeroTestType').value;
+    const stability = ratingValues.stabilityRating;
+    const downforce = ratingValues.downforceRating;
+    const feedback = document.getElementById('aeroFeedback').value.trim();
+    if (!testType || !feedback) {
+      const s = document.getElementById('aeroStatus');
+      s.style.color = 'var(--warning)';
+      s.textContent = '\u26A0 Select test type & add feedback';
+      return;
+    }
+    const ok = await postToSheet({ type: 'aero', testType, stability, downforce, feedback }, 'aeroStatus');
+    if (ok) {
+      document.getElementById('aeroTestType').selectedIndex = 0;
+      document.getElementById('aeroFeedback').value = '';
+      setRating('stabilityRating', 0);
+      setRating('downforceRating', 0);
+    }
+  }
+
+  // ─── Add Telemetry Row ───
+  function addTelemetryRow() {
+    const tbody = document.getElementById('telemetryBody');
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td><input type="text" placeholder="Full name"></td>
+      <td><input type="date"></td>
+      <td><input type="number" class="odo-start-input" placeholder="0000"></td>
+      <td><input type="number" placeholder="0000"></td>
+      <td><input type="number" step="0.1" placeholder="0.0"></td>
+      <td><select><option value="">Select</option><option>Exceptional</option><option>Strong</option><option>Adequate</option><option>Sluggish</option><option>Unstable</option></select></td>
+      <td><select><option value="">Select</option><option>Planted</option><option>Confident</option><option>Neutral</option><option>Nervous</option><option>Dangerous</option></select></td>
+      <td><input type="text" placeholder="Session notes..."></td>
+    `;
+    tbody.appendChild(newRow);
+    newRow.querySelector('.odo-start-input').addEventListener('focus', function() {
+      if (!this.value) this.value = currentOdo;
+    });
+  }
+</script>
+
+</body>
+</html>
