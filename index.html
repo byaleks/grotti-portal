@@ -368,66 +368,6 @@
     margin-top: 0.25rem;
   }
 
-  /* ─── VHI - Vehicle Health Index ─── */
-  .vhi-card {
-    background: linear-gradient(135deg, rgba(20,20,20,0.95), rgba(30,30,30,0.9));
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 12px;
-    padding: 1.75rem;
-    text-align: center;
-  }
-
-  .vhi-ring {
-    width: 140px;
-    height: 140px;
-    margin: 1rem auto;
-    position: relative;
-  }
-
-  .vhi-ring svg {
-    transform: rotate(-90deg);
-  }
-
-  .vhi-ring .bg {
-    fill: none;
-    stroke: var(--carbon-600);
-    stroke-width: 8;
-  }
-
-  .vhi-ring .progress {
-    fill: none;
-    stroke: var(--success);
-    stroke-width: 8;
-    stroke-linecap: round;
-    stroke-dasharray: 408;
-    stroke-dashoffset: 45;
-    transition: stroke-dashoffset 1.5s ease;
-  }
-
-  .vhi-value {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: var(--font-mono);
-    font-size: 2rem;
-    font-weight: 500;
-    color: white;
-  }
-
-  .vhi-value span {
-    font-size: 0.75rem;
-    color: var(--carbon-400);
-  }
-
-  .vhi-label {
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--carbon-400);
-    margin-top: 0.5rem;
-  }
-
   /* ─── TABLE STYLES ─── */
   .data-table {
     width: 100%;
@@ -818,70 +758,25 @@
     </div>
   </section>
 
-  <!-- ════════════ VHI + OVERVIEW GRID ════════════ -->
-  <div class="grid-2" style="margin-bottom:1.5rem;">
-    <div class="section-card">
-      <div class="section-label">SYS.001 — Vehicle Health</div>
-      <div class="section-title">Vehicle Health Index</div>
-      <p class="section-desc" style="margin-bottom:1rem;">
-        VHI decays with accumulated mileage and reported issues. Drops below 60% require a maintenance ticket submitted to Grotti Engineering.
-      </p>
-      <div style="display:flex;align-items:center;gap:2rem;">
-        <div class="vhi-ring">
-          <svg width="140" height="140" viewBox="0 0 140 140">
-            <circle class="bg" cx="70" cy="70" r="65"/>
-            <circle class="progress" cx="70" cy="70" r="65"/>
-          </svg>
-          <div class="vhi-value">89<span>%</span></div>
-        </div>
-        <div>
-          <div style="margin-bottom:0.75rem;">
-            <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;">Engine</div>
-            <div style="height:6px;background:var(--carbon-600);border-radius:3px;width:200px;max-width:100%;">
-              <div style="height:100%;width:94%;background:var(--success);border-radius:3px;"></div>
-            </div>
-          </div>
-          <div style="margin-bottom:0.75rem;">
-            <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;">Transmission</div>
-            <div style="height:6px;background:var(--carbon-600);border-radius:3px;width:200px;max-width:100%;">
-              <div style="height:100%;width:87%;background:var(--success);border-radius:3px;"></div>
-            </div>
-          </div>
-          <div style="margin-bottom:0.75rem;">
-            <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;">Suspension</div>
-            <div style="height:6px;background:var(--carbon-600);border-radius:3px;width:200px;max-width:100%;">
-              <div style="height:100%;width:78%;background:var(--warning);border-radius:3px;"></div>
-            </div>
-          </div>
-          <div>
-            <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.25rem;">Body/Aero</div>
-            <div style="height:6px;background:var(--carbon-600);border-radius:3px;width:200px;max-width:100%;">
-              <div style="height:100%;width:65%;background:var(--warning);border-radius:3px;"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- ════════════ QUICK ACTIONS ════════════ -->
+  <div class="section-card" style="margin-bottom:1.5rem;">
+    <div class="section-label">SYS.001 — Quick Actions</div>
+    <div class="section-title">Test Team Actions</div>
+    <p class="section-desc" style="margin-bottom:1.25rem;">Select an action below to log data or submit reports to Grotti Engineering.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0.75rem;">
+      <button class="btn btn-primary" style="justify-content:center;">+ Log Session</button>
+      <button class="btn btn-ghost" style="justify-content:center;">Report Issue</button>
+      <button class="btn btn-ghost" style="justify-content:center;">Maint. Ticket</button>
+      <button class="btn btn-ghost" style="justify-content:center;">Stability Feedback</button>
     </div>
-
-    <div class="section-card">
-      <div class="section-label">SYS.002 — Quick Actions</div>
-      <div class="section-title">Test Team Actions</div>
-      <p class="section-desc" style="margin-bottom:1.25rem;">Select an action below to log data or submit reports to Grotti Engineering.</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-        <button class="btn btn-primary" style="justify-content:center;">+ Log Session</button>
-        <button class="btn btn-ghost" style="justify-content:center;">Report Issue</button>
-        <button class="btn btn-ghost" style="justify-content:center;">Maint. Ticket</button>
-        <button class="btn btn-ghost" style="justify-content:center;">Aero Feedback</button>
+    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.04);">
+      <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Completion Progress</div>
+      <div style="height:8px;background:var(--carbon-600);border-radius:4px;">
+        <div style="height:100%;width:0%;background:linear-gradient(90deg,var(--rosso-corsa),var(--rosso-glow));border-radius:4px;transition:width 1s ease;" id="progressBar"></div>
       </div>
-      <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.04);">
-        <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Completion Progress</div>
-        <div style="height:8px;background:var(--carbon-600);border-radius:4px;">
-          <div style="height:100%;width:0%;background:linear-gradient(90deg,var(--rosso-corsa),var(--rosso-glow));border-radius:4px;transition:width 1s ease;" id="progressBar"></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;margin-top:0.4rem;">
-          <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--carbon-400);" id="progressText">Loading…</span>
-          <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--rosso-glow);" id="progressPct">—</span>
-        </div>
+      <div style="display:flex;justify-content:space-between;margin-top:0.4rem;">
+        <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--carbon-400);" id="progressText">Loading…</span>
+        <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--rosso-glow);" id="progressPct">—</span>
       </div>
     </div>
   </div>
@@ -890,7 +785,7 @@
   <section class="section-card">
     <div class="section-label">TEL.001 — Data Ingestion</div>
     <div class="section-title">Telemetry &amp; Data Collection</div>
-    <p class="section-desc">Log session data including mileage, fuel consumption, and subjective feedback at key speed intervals. Each driver session must include an odometer start/end reading.</p>
+    <p class="section-desc">Log session data including mileage and subjective feedback at key speed intervals. Each driver session must include an odometer start/end reading.</p>
 
     <table class="data-table">
       <thead>
@@ -899,7 +794,6 @@
           <th>Date</th>
           <th>ODO Start</th>
           <th>ODO End</th>
-          <th>Fuel (gal)</th>
           <th>0–60 Feel</th>
           <th>100+ Feel</th>
           <th>Notes</th>
@@ -911,7 +805,6 @@
           <td><input type="date"></td>
           <td><input type="number" class="odo-start-input" placeholder="0000"></td>
           <td><input type="number" placeholder="0000"></td>
-          <td><input type="number" step="0.1" placeholder="0.0"></td>
           <td>
             <select>
               <option value="">Select</option>
@@ -1132,10 +1025,6 @@
     </div>
     <div class="contract-clause">
       <span class="clause-num">§4</span>
-      <span class="clause-text">The Vehicle Health Index must remain above <strong style="color:white">50%</strong> at all times. Maintenance tickets must be filed promptly for any subsystem degradation.</span>
-    </div>
-    <div class="contract-clause">
-      <span class="clause-num">§5</span>
       <span class="clause-text"><strong style="color:var(--gold-accent)">Upon successful completion</strong> of the validation mileage, data submission requirements, and showcase obligations, <strong style="color:white">full ownership of the prototype shall be transferred to Redline Motorsports</strong>, free and clear of any liens or encumbrances.</span>
     </div>
 
@@ -1346,10 +1235,9 @@
         date: inputs[1]?.value || '',
         odoStart: inputs[2]?.value || '',
         odoEnd: inputs[3]?.value || '',
-        fuel: inputs[4]?.value || '',
         feel060: selects[0]?.value || '',
         feel100: selects[1]?.value || '',
-        notes: inputs[5]?.value || ''
+        notes: inputs[4]?.value || ''
       });
     });
     if (rows.length === 0) {
