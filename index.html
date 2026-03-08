@@ -729,6 +729,27 @@
 
 <main class="main">
 
+  <!-- ════════════ OOC KM CALCULATOR ════════════ -->
+  <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;animation:fadeUp 0.4s ease-out both;">
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+      <span style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold-accent);">(( OOC — KM Calculator ))</span>
+    </div>
+    <div style="display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap;">
+      <div style="flex:1;min-width:150px;">
+        <label style="display:block;font-size:0.7rem;color:var(--carbon-400);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem;">KM when spawned</label>
+        <input type="number" id="oocStart" class="form-input" placeholder="0" style="padding:0.5rem 0.75rem;" oninput="calcOocDiff()">
+      </div>
+      <div style="flex:1;min-width:150px;">
+        <label style="display:block;font-size:0.7rem;color:var(--carbon-400);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem;">KM at /parkvehicle</label>
+        <input type="number" id="oocEnd" class="form-input" placeholder="0" style="padding:0.5rem 0.75rem;" oninput="calcOocDiff()">
+      </div>
+      <div style="flex:1;min-width:150px;">
+        <label style="display:block;font-size:0.7rem;color:var(--carbon-400);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem;">Difference</label>
+        <div id="oocDiff" style="font-family:var(--font-mono);font-size:1.1rem;font-weight:500;color:white;padding:0.5rem 0.75rem;background:var(--carbon-700);border:1px solid var(--carbon-500);border-radius:8px;">—</div>
+      </div>
+    </div>
+  </div>
+
   <!-- ════════════ 1. PROJECT OVERVIEW / HERO ════════════ -->
   <section class="hero-section">
     <div class="hero-badge">◆&ensp;Confidential — Factory Test Program</div>
@@ -1294,6 +1315,24 @@
       document.getElementById('aeroFeedback').value = '';
       setRating('stabilityRating', 0);
       setRating('downforceRating', 0);
+    }
+  }
+
+  // ─── OOC KM Calculator ───
+  function calcOocDiff() {
+    const start = Number(document.getElementById('oocStart').value) || 0;
+    const end = Number(document.getElementById('oocEnd').value) || 0;
+    const diff = end - start;
+    const el = document.getElementById('oocDiff');
+    if (!document.getElementById('oocStart').value || !document.getElementById('oocEnd').value) {
+      el.textContent = '—';
+      el.style.color = 'white';
+    } else if (diff < 0) {
+      el.textContent = 'Check values';
+      el.style.color = 'var(--danger)';
+    } else {
+      el.textContent = diff.toLocaleString() + ' km';
+      el.style.color = 'var(--success)';
     }
   }
 
