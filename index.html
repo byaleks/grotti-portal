@@ -734,7 +734,7 @@
     <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
       <span style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold-accent);">(( OOC — KM Calculator ))</span>
     </div>
-    <div style="display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap;">
+    <div style="display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:1rem;">
       <div style="flex:1;min-width:150px;">
         <label style="display:block;font-size:0.7rem;color:var(--carbon-400);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem;">KM when spawned</label>
         <input type="number" id="oocStart" class="form-input" placeholder="0" style="padding:0.5rem 0.75rem;" oninput="calcOocDiff()">
@@ -746,6 +746,26 @@
       <div style="flex:1;min-width:150px;">
         <label style="display:block;font-size:0.7rem;color:var(--carbon-400);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem;">Difference</label>
         <div id="oocDiff" style="font-family:var(--font-mono);font-size:1.1rem;font-weight:500;color:white;padding:0.5rem 0.75rem;background:var(--carbon-700);border:1px solid var(--carbon-500);border-radius:8px;">—</div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(201,168,76,0.12);padding-top:1rem;display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap;">
+      <div style="flex:1;min-width:150px;">
+        <label style="display:block;font-size:0.7rem;color:var(--carbon-400);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem;">ODO Start (from TEL.001)</label>
+        <div id="oocOdoStart" style="font-family:var(--font-mono);font-size:1.1rem;font-weight:500;color:var(--carbon-300);padding:0.5rem 0.75rem;background:var(--carbon-700);border:1px solid var(--carbon-500);border-radius:8px;">—</div>
+      </div>
+      <div style="flex:0 0 auto;padding-bottom:0.5rem;">
+        <span style="font-family:var(--font-mono);font-size:1rem;color:var(--carbon-400);">+</span>
+      </div>
+      <div style="flex:1;min-width:150px;">
+        <label style="display:block;font-size:0.7rem;color:var(--carbon-400);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem;">Difference</label>
+        <div id="oocDiffCopy" style="font-family:var(--font-mono);font-size:1.1rem;font-weight:500;color:var(--carbon-300);padding:0.5rem 0.75rem;background:var(--carbon-700);border:1px solid var(--carbon-500);border-radius:8px;">—</div>
+      </div>
+      <div style="flex:0 0 auto;padding-bottom:0.5rem;">
+        <span style="font-family:var(--font-mono);font-size:1rem;color:var(--carbon-400);">=</span>
+      </div>
+      <div style="flex:1;min-width:150px;">
+        <label style="display:block;font-size:0.7rem;color:var(--gold-accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem;">New ODO End</label>
+        <div id="oocNewOdoEnd" style="font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--gold-accent);padding:0.5rem 0.75rem;background:var(--carbon-700);border:1px solid rgba(201,168,76,0.3);border-radius:8px;">—</div>
       </div>
     </div>
   </div>
@@ -816,7 +836,7 @@
         <tr>
           <td><input type="text" placeholder="Full name"></td>
           <td><input type="date"></td>
-          <td><input type="number" class="odo-start-input" placeholder="0000"></td>
+          <td><input type="number" class="odo-start-input" placeholder="0000" oninput="calcOocDiff()"></td>
           <td><input type="number" placeholder="0000"></td>
           <td>
             <select>
@@ -1323,16 +1343,42 @@
     const start = Number(document.getElementById('oocStart').value) || 0;
     const end = Number(document.getElementById('oocEnd').value) || 0;
     const diff = end - start;
-    const el = document.getElementById('oocDiff');
+    const diffEl = document.getElementById('oocDiff');
+    const diffCopyEl = document.getElementById('oocDiffCopy');
+    const odoEndEl = document.getElementById('oocNewOdoEnd');
+    const odoStartEl = document.getElementById('oocOdoStart');
+
+    // Get ODO Start from telemetry field
+    const telOdoStart = Number(document.querySelector('.odo-start-input')?.value) || 0;
+
     if (!document.getElementById('oocStart').value || !document.getElementById('oocEnd').value) {
-      el.textContent = '—';
-      el.style.color = 'white';
+      diffEl.textContent = '—';
+      diffEl.style.color = 'white';
+      diffCopyEl.textContent = '—';
+      odoEndEl.textContent = '—';
+      odoEndEl.style.color = 'var(--gold-accent)';
     } else if (diff < 0) {
-      el.textContent = 'Check values';
-      el.style.color = 'var(--danger)';
+      diffEl.textContent = 'Check values';
+      diffEl.style.color = 'var(--danger)';
+      diffCopyEl.textContent = '—';
+      odoEndEl.textContent = '—';
     } else {
-      el.textContent = diff.toLocaleString() + ' km';
-      el.style.color = 'var(--success)';
+      diffEl.textContent = diff.toLocaleString() + ' km';
+      diffEl.style.color = 'var(--success)';
+      diffCopyEl.textContent = diff.toLocaleString() + ' km';
+
+      // Second row: ODO Start + Difference = New ODO End
+      if (telOdoStart > 0) {
+        odoStartEl.textContent = telOdoStart.toLocaleString();
+        odoStartEl.style.color = 'white';
+        const newEnd = telOdoStart + diff;
+        odoEndEl.textContent = newEnd.toLocaleString() + ' km';
+        odoEndEl.style.color = 'var(--gold-accent)';
+      } else {
+        odoStartEl.textContent = 'Fill ODO Start in TEL.001';
+        odoStartEl.style.color = 'var(--carbon-400)';
+        odoEndEl.textContent = '—';
+      }
     }
   }
 
