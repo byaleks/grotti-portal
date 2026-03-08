@@ -750,7 +750,7 @@
     </div>
     <div style="border-top:1px solid rgba(201,168,76,0.12);padding-top:1rem;display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap;">
       <div style="flex:1;min-width:150px;">
-        <label style="display:block;font-size:0.7rem;color:var(--carbon-400);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem;">ODO Start (from TEL.001)</label>
+        <label style="display:block;font-size:0.7rem;color:var(--carbon-400);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.3rem;">Current ODO</label>
         <div id="oocOdoStart" style="font-family:var(--font-mono);font-size:1.1rem;font-weight:500;color:var(--carbon-300);padding:0.5rem 0.75rem;background:var(--carbon-700);border:1px solid var(--carbon-500);border-radius:8px;">—</div>
       </div>
       <div style="flex:0 0 auto;padding-bottom:0.5rem;">
@@ -836,7 +836,7 @@
         <tr>
           <td><input type="text" placeholder="Full name"></td>
           <td><input type="date"></td>
-          <td><input type="number" class="odo-start-input" placeholder="0000" oninput="calcOocDiff()"></td>
+          <td><input type="number" class="odo-start-input" placeholder="0000"></td>
           <td><input type="number" placeholder="0000"></td>
           <td>
             <select>
@@ -1348,15 +1348,11 @@
     const odoEndEl = document.getElementById('oocNewOdoEnd');
     const odoStartEl = document.getElementById('oocOdoStart');
 
-    // Get ODO Start from telemetry field
-    const telOdoStart = Number(document.querySelector('.odo-start-input')?.value) || 0;
-
     if (!document.getElementById('oocStart').value || !document.getElementById('oocEnd').value) {
       diffEl.textContent = '—';
       diffEl.style.color = 'white';
       diffCopyEl.textContent = '—';
       odoEndEl.textContent = '—';
-      odoEndEl.style.color = 'var(--gold-accent)';
     } else if (diff < 0) {
       diffEl.textContent = 'Check values';
       diffEl.style.color = 'var(--danger)';
@@ -1367,15 +1363,14 @@
       diffEl.style.color = 'var(--success)';
       diffCopyEl.textContent = diff.toLocaleString() + ' km';
 
-      // Second row: ODO Start + Difference = New ODO End
-      if (telOdoStart > 0) {
-        odoStartEl.textContent = telOdoStart.toLocaleString();
+      if (currentOdo > 0) {
+        odoStartEl.textContent = currentOdo.toLocaleString() + ' km';
         odoStartEl.style.color = 'white';
-        const newEnd = telOdoStart + diff;
+        const newEnd = currentOdo + diff;
         odoEndEl.textContent = newEnd.toLocaleString() + ' km';
         odoEndEl.style.color = 'var(--gold-accent)';
       } else {
-        odoStartEl.textContent = 'Fill ODO Start in TEL.001';
+        odoStartEl.textContent = 'Waiting for data…';
         odoStartEl.style.color = 'var(--carbon-400)';
         odoEndEl.textContent = '—';
       }
