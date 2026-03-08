@@ -736,11 +736,11 @@
       Prototype <span class="italic">Validation</span> Portal
     </h1>
     <p class="hero-subtitle">
-      Grotti Auto Group has selected <strong style="color:white;">Redline Motorsports</strong> as the designated Factory Test Team for the validation phase of the upcoming re-release prototype. All telemetry, wear data, and aerodynamic feedback is to be submitted through this portal.
+      Grotti Automobili has selected <strong style="color:white;">Redline Motorsports</strong> as the designated Factory Test Team for the validation phase of the upcoming re-release prototype. All telemetry, wear data, and aerodynamic feedback is to be submitted through this portal.
     </p>
     <div class="stats-row">
       <div class="stat-item">
-        <div class="stat-value">1,500<span class="unit">mi</span></div>
+        <div class="stat-value">2,500<span class="unit">mi</span></div>
         <div class="stat-label">Target Mileage</div>
       </div>
       <div class="stat-item">
@@ -748,7 +748,7 @@
         <div class="stat-label">Logged to Date</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value">14<span class="unit">days</span></div>
+        <div class="stat-value"><span id="heroDaysLeft">14</span><span class="unit">days</span></div>
         <div class="stat-label">Remaining</div>
       </div>
       <div class="stat-item">
@@ -760,7 +760,7 @@
 
   <!-- ════════════ COMPLETION PROGRESS ════════════ -->
   <div class="section-card" style="margin-bottom:1.5rem;">
-    <div class="section-label">SYS.000 — Validation Progress</div>
+    <div class="section-label">SYS.001 — Validation Progress</div>
     <div class="section-title">Completion Progress</div>
     <div style="margin-top:1rem;">
       <div style="height:8px;background:var(--carbon-600);border-radius:4px;">
@@ -916,14 +916,14 @@
     <div class="aero-tag">◆ Priority — Investigation Required</div>
     <div class="section-title" style="font-size:2rem;">High-Speed Stability Concern</div>
     <p class="section-desc" style="margin-bottom:1.5rem;">
-      During initial testing, Grotti Engineering has flagged an <strong style="color:var(--rosso-glow);">unresolved high-speed stability issue</strong> with the prototype. At sustained speeds above 100 KM/H, drivers have reported the rear end feeling light and unsettled — particularly through long sweeping corners and under hard braking. There appears to be <strong style="color:white;">insufficient downforce on the rear axle</strong>, causing the back end to lose traction unpredictably. The root cause has not yet been determined and may relate to the current rear bodywork configuration. We need the test team's input to help identify what's causing the issue and what modification might resolve it.
+      During initial testing, Grotti Engineering has flagged an <strong style="color:var(--rosso-glow);">unresolved high-speed stability issue</strong> with the prototype. At sustained speeds above 100 MPH, drivers have reported the rear end feeling light and unsettled — particularly through long sweeping corners and under hard braking. There appears to be <strong style="color:white;">insufficient downforce on the rear axle</strong>, causing the back end to lose traction unpredictably. The root cause has not yet been determined and may relate to the current rear bodywork configuration. We need the test team's input to help identify what's causing the issue and what modification might resolve it.
     </p>
 
     <div class="grid-3" style="margin-bottom:1.5rem;">
       <div style="background:var(--carbon-700);padding:1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);">
         <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Reported Symptom</div>
         <div style="font-size:0.9rem;color:var(--carbon-200);font-weight:600;">Rear-End Lift at Speed</div>
-        <p style="font-size:0.8rem;color:var(--carbon-400);margin-top:0.3rem;">Above 100 KM/H the rear feels light and floaty. The back of the car appears to be generating lift rather than being pushed down onto the road surface.</p>
+        <p style="font-size:0.8rem;color:var(--carbon-400);margin-top:0.3rem;">Above 100 MPH the rear feels light and floaty. The back of the car appears to be generating lift rather than being pushed down onto the road surface.</p>
       </div>
       <div style="background:var(--carbon-700);padding:1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);">
         <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Reported Symptom</div>
@@ -946,7 +946,7 @@
             <option>Rear-end lift at sustained high speed</option>
             <option>Oversteer / rear stepping out under braking</option>
             <option>Rear sliding in fast corners</option>
-            <option>General instability above 100 KM/H</option>
+            <option>General instability above 100 MPH</option>
             <option>Crosswind sensitivity at speed</option>
             <option>Other (describe below)</option>
           </select>
@@ -1000,12 +1000,12 @@
     <div class="section-label" style="color:var(--gold-accent);">LGL.001 — Binding Terms</div>
     <div class="section-title">Validation Contract Terms</div>
     <p class="section-desc" style="margin-bottom:1.25rem;">
-      The following terms govern the Factory Test Team agreement between <strong style="color:white">Grotti Auto Group</strong> and <strong style="color:white">Redline Motorsports</strong>.
+      The following terms govern the Factory Test Team agreement between <strong style="color:white">Grotti Automobili</strong> and <strong style="color:white">Redline Motorsports</strong>.
     </p>
 
     <div class="contract-clause">
       <span class="clause-num">§1</span>
-      <span class="clause-text">Redline Motorsports ("Test Team") shall accumulate a minimum of <strong style="color:white">1,500 validated miles</strong> on the designated prototype within the testing window.</span>
+      <span class="clause-text">Redline Motorsports ("Test Team") shall accumulate a minimum of <strong style="color:white">2,500 validated miles</strong> on the designated prototype within the testing window.</span>
     </div>
     <div class="contract-clause">
       <span class="clause-num">§2</span>
@@ -1041,17 +1041,23 @@
   // ═══════════════════════════════════════════════════════════
   // CONFIGURATION — Paste your Google Apps Script URL below
   // ═══════════════════════════════════════════════════════════
-  const API_URL = 'https://script.google.com/macros/s/AKfycbxOSMqsZE2FmPYm-TzABAdI1vK15W2dcCFkuQyqykOkYMCfjCmHVJTVpBosQwXR59bi/exec';
+  const API_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
   // After deploying, replace with something like:
   // 'https://script.google.com/macros/s/AKfycbx.../exec'
   // ═══════════════════════════════════════════════════════════
 
-  const TARGET_MILEAGE = 1500;
+  const TARGET_MILEAGE = 2500;
 
   // Set header date
   document.getElementById('headerDate').textContent = new Date().toLocaleDateString('en-US', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
   });
+
+  // ─── Countdown: Deadline is March 6, 2026 ───
+  const DEADLINE = new Date('2026-03-22T23:59:59');
+  const now = new Date();
+  const daysLeft = Math.max(0, Math.ceil((DEADLINE - now) / (1000 * 60 * 60 * 24)));
+  document.getElementById('heroDaysLeft').textContent = daysLeft;
 
   // ─── Rating buttons ───
   let ratingValues = { stabilityRating: 0, downforceRating: 0 };
