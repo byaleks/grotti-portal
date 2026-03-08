@@ -716,7 +716,7 @@
       <div class="odo-display" id="odoDisplay">
         <div class="odo-label">Current ODO</div>
         <div class="odo-value" id="odoValue">—</div>
-        <div class="odo-unit">mi</div>
+        <div class="odo-unit">km</div>
       </div>
       <div class="status-pill">
         <span class="status-dot"></span>
@@ -740,11 +740,11 @@
     </p>
     <div class="stats-row">
       <div class="stat-item">
-        <div class="stat-value">2,500<span class="unit">mi</span></div>
-        <div class="stat-label">Target Mileage</div>
+        <div class="stat-value">4,000<span class="unit">km</span></div>
+        <div class="stat-label">Target Distance</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value"><span id="heroLogged">—</span><span class="unit">mi</span></div>
+        <div class="stat-value"><span id="heroLogged">—</span><span class="unit">km</span></div>
         <div class="stat-label">Logged to Date</div>
       </div>
       <div class="stat-item">
@@ -777,7 +777,7 @@
   <section class="section-card">
     <div class="section-label">TEL.001 — Data Ingestion</div>
     <div class="section-title">Telemetry &amp; Data Collection</div>
-    <p class="section-desc">Log session data including mileage and subjective feedback at key speed intervals. Each driver session must include an odometer start/end reading.</p>
+    <p class="section-desc">Log session data including kilometres and subjective feedback at key speed intervals. Each driver session must include an odometer start/end reading.</p>
 
     <table class="data-table">
       <thead>
@@ -870,7 +870,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">Odometer at Incident</label>
-          <input type="number" class="form-input" id="dmgOdometer" placeholder="Current mileage">
+          <input type="number" class="form-input" id="dmgOdometer" placeholder="Current km">
         </div>
       </div>
       <div>
@@ -916,14 +916,14 @@
     <div class="aero-tag">◆ Priority — Investigation Required</div>
     <div class="section-title" style="font-size:2rem;">High-Speed Stability Concern</div>
     <p class="section-desc" style="margin-bottom:1.5rem;">
-      During initial testing, Grotti Engineering has flagged an <strong style="color:var(--rosso-glow);">unresolved high-speed stability issue</strong> with the prototype. At sustained speeds above 100 km/h, drivers have reported the rear end feeling light and unsettled — particularly through long sweeping corners and under hard braking. There appears to be <strong style="color:white;">insufficient downforce on the rear axle</strong>, causing the back end to lose traction unpredictably. The root cause has not yet been determined and may relate to the current rear bodywork configuration. We need the test team's input to help identify what's causing the issue and what modification might resolve it.
+      During initial testing, Grotti Engineering has flagged an <strong style="color:var(--rosso-glow);">unresolved high-speed stability issue</strong> with the prototype. At sustained speeds above 100 MPH, drivers have reported the rear end feeling light and unsettled — particularly through long sweeping corners and under hard braking. There appears to be <strong style="color:white;">insufficient downforce on the rear axle</strong>, causing the back end to lose traction unpredictably. The root cause has not yet been determined and may relate to the current rear bodywork configuration. We need the test team's input to help identify what's causing the issue and what modification might resolve it.
     </p>
 
     <div class="grid-3" style="margin-bottom:1.5rem;">
       <div style="background:var(--carbon-700);padding:1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);">
         <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Reported Symptom</div>
         <div style="font-size:0.9rem;color:var(--carbon-200);font-weight:600;">Rear-End Lift at Speed</div>
-        <p style="font-size:0.8rem;color:var(--carbon-400);margin-top:0.3rem;">Above 100 km/h the rear feels light and floaty. The back of the car appears to be generating lift rather than being pushed down onto the road surface.</p>
+        <p style="font-size:0.8rem;color:var(--carbon-400);margin-top:0.3rem;">Above 100 MPH the rear feels light and floaty. The back of the car appears to be generating lift rather than being pushed down onto the road surface.</p>
       </div>
       <div style="background:var(--carbon-700);padding:1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);">
         <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Reported Symptom</div>
@@ -946,7 +946,7 @@
             <option>Rear-end lift at sustained high speed</option>
             <option>Oversteer / rear stepping out under braking</option>
             <option>Rear sliding in fast corners</option>
-            <option>General instability above 100 km/h</option>
+            <option>General instability above 100 MPH</option>
             <option>Crosswind sensitivity at speed</option>
             <option>Other (describe below)</option>
           </select>
@@ -1005,11 +1005,11 @@
 
     <div class="contract-clause">
       <span class="clause-num">§1</span>
-      <span class="clause-text">Redline Motorsports ("Test Team") shall accumulate a minimum of <strong style="color:white">2,500 validated miles</strong> on the designated prototype within the testing window.</span>
+      <span class="clause-text">Redline Motorsports ("Test Team") shall accumulate a minimum of <strong style="color:white">4,000 validated kilometres</strong> on the designated prototype within the testing window.</span>
     </div>
     <div class="contract-clause">
       <span class="clause-num">§2</span>
-      <span class="clause-text">All telemetry sessions must be logged via the Prototype Validation Portal. Incomplete or unsigned entries will not count toward the mileage requirement.</span>
+      <span class="clause-text">All telemetry sessions must be logged via the Prototype Validation Portal. Incomplete or unsigned entries will not count toward the kilometre requirement.</span>
     </div>
     <div class="contract-clause">
       <span class="clause-num">§3</span>
@@ -1017,7 +1017,7 @@
     </div>
     <div class="contract-clause">
       <span class="clause-num">§4</span>
-      <span class="clause-text"><strong style="color:var(--gold-accent)">Upon successful completion</strong> of the validation mileage, data submission requirements, and showcase obligations, <strong style="color:white">full ownership of the prototype shall be transferred to Redline Motorsports</strong>, free and clear of any liens or encumbrances.</span>
+      <span class="clause-text"><strong style="color:var(--gold-accent)">Upon successful completion</strong> of the validation kilometres, data submission requirements, and showcase obligations, <strong style="color:white">full ownership of the prototype shall be transferred to Redline Motorsports</strong>, free and clear of any liens or encumbrances.</span>
     </div>
 
     <div style="margin-top:1.5rem;padding:1.25rem;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.12);border-radius:8px;display:flex;align-items:center;gap:1rem;">
@@ -1080,7 +1080,7 @@
     document.getElementById('heroLogged').textContent = odo.toLocaleString();
     const pct = Math.min((odo / TARGET_MILEAGE) * 100, 100).toFixed(1);
     document.getElementById('progressBar').style.width = pct + '%';
-    document.getElementById('progressText').textContent = odo.toLocaleString() + ' / ' + TARGET_MILEAGE.toLocaleString() + ' mi';
+    document.getElementById('progressText').textContent = odo.toLocaleString() + ' / ' + TARGET_MILEAGE.toLocaleString() + ' km';
     document.getElementById('progressPct').textContent = pct + '%';
   }
 
