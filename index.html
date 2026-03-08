@@ -866,6 +866,36 @@
       <button class="btn btn-primary" onclick="submitTelemetry()">Submit Session</button>
       <span id="telStatus" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--carbon-400);margin-left:0.5rem;"></span>
     </div>
+
+    <!-- Telemetry Recent Entries -->
+    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.04);" id="telRecentSection">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+        <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;">All Sessions</div>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <button class="btn btn-ghost" style="padding:0.3rem 0.6rem;font-size:0.65rem;" onclick="telPrevPage()">&larr; Prev</button>
+          <span id="telPageInfo" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--carbon-400);">—</span>
+          <button class="btn btn-ghost" style="padding:0.3rem 0.6rem;font-size:0.65rem;" onclick="telNextPage()">Next &rarr;</button>
+        </div>
+      </div>
+      <table class="data-table" style="margin-top:0;">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Driver</th>
+            <th>ODO Start</th>
+            <th>ODO End</th>
+            <th>0–60</th>
+            <th>100+</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="telRecentBody">
+          <tr>
+            <td colspan="7" style="text-align:center;color:var(--carbon-400);font-style:italic;padding:1.5rem;">Loading from spreadsheet…</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <!-- ════════════ 3. DAMAGE & WEAR LOG ════════════ -->
@@ -957,14 +987,14 @@
     <div class="aero-tag">◆ Priority — Investigation Required</div>
     <div class="section-title" style="font-size:2rem;">High-Speed Stability Concern</div>
     <p class="section-desc" style="margin-bottom:1.5rem;">
-      During initial testing, Grotti Engineering has flagged an <strong style="color:var(--rosso-glow);">unresolved high-speed stability issue</strong> with the prototype. At sustained speeds above 100 KM/H, drivers have reported the rear end feeling light and unsettled — particularly through long sweeping corners and under hard braking. There appears to be <strong style="color:white;">insufficient downforce on the rear axle</strong>, causing the back end to lose traction unpredictably. The root cause has not yet been determined and may relate to the current rear bodywork configuration. We need the test team's input to help identify what's causing the issue and what modification might resolve it.
+      During initial testing, Grotti Engineering has flagged an <strong style="color:var(--rosso-glow);">unresolved high-speed stability issue</strong> with the prototype. At sustained speeds above 160 KM/H, drivers have reported the rear end feeling light and unsettled — particularly through long sweeping corners and under hard braking. There appears to be <strong style="color:white;">insufficient downforce on the rear axle</strong>, causing the back end to lose traction unpredictably. The root cause has not yet been determined and may relate to the current rear bodywork configuration. We need the test team's input to help identify what's causing the issue and what modification might resolve it.
     </p>
 
     <div class="grid-3" style="margin-bottom:1.5rem;">
       <div style="background:var(--carbon-700);padding:1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);">
         <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Reported Symptom</div>
         <div style="font-size:0.9rem;color:var(--carbon-200);font-weight:600;">Rear-End Lift at Speed</div>
-        <p style="font-size:0.8rem;color:var(--carbon-400);margin-top:0.3rem;">Above 100 KM/H the rear feels light and floaty. The back of the car appears to be generating lift rather than being pushed down onto the road surface.</p>
+        <p style="font-size:0.8rem;color:var(--carbon-400);margin-top:0.3rem;">Above 160 KM/H the rear feels light and floaty. The back of the car appears to be generating lift rather than being pushed down onto the road surface.</p>
       </div>
       <div style="background:var(--carbon-700);padding:1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.04);">
         <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;">Reported Symptom</div>
@@ -987,7 +1017,7 @@
             <option>Rear-end lift at sustained high speed</option>
             <option>Oversteer / rear stepping out under braking</option>
             <option>Rear sliding in fast corners</option>
-            <option>General instability above 100 KM/H</option>
+            <option>General instability above 160 KM/H</option>
             <option>Crosswind sensitivity at speed</option>
             <option>Other (describe below)</option>
           </select>
@@ -1033,6 +1063,34 @@
     <div style="margin-top:1rem;display:flex;gap:0.75rem;align-items:center;">
       <button class="btn btn-primary" onclick="submitAero()">Submit Feedback</button>
       <span id="aeroStatus" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--carbon-400);margin-left:0.5rem;"></span>
+    </div>
+
+    <!-- Aero Recent Entries -->
+    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.04);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+        <div style="font-size:0.65rem;color:var(--carbon-400);letter-spacing:2px;text-transform:uppercase;">All Feedback</div>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <button class="btn btn-ghost" style="padding:0.3rem 0.6rem;font-size:0.65rem;" onclick="aeroPrevPage()">&larr; Prev</button>
+          <span id="aeroPageInfo" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--carbon-400);">—</span>
+          <button class="btn btn-ghost" style="padding:0.3rem 0.6rem;font-size:0.65rem;" onclick="aeroNextPage()">Next &rarr;</button>
+        </div>
+      </div>
+      <table class="data-table" style="margin-top:0;">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Symptom</th>
+            <th>Severity</th>
+            <th>Grip</th>
+            <th>Diagnosis / Recommendation</th>
+          </tr>
+        </thead>
+        <tbody id="aeroRecentBody">
+          <tr>
+            <td colspan="5" style="text-align:center;color:var(--carbon-400);font-style:italic;padding:1.5rem;">Loading from spreadsheet…</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -1172,6 +1230,18 @@
       // Render damage entries
       if (data.damage) {
         renderDamageEntries(data.damage);
+      }
+
+      // Render telemetry entries
+      if (data.telemetryEntries) {
+        telEntries = data.telemetryEntries;
+        renderTelEntries();
+      }
+
+      // Render aero entries
+      if (data.aeroEntries) {
+        aeroEntries = data.aeroEntries;
+        renderAeroEntries();
       }
 
     } catch (err) {
@@ -1375,6 +1445,121 @@
         odoEndEl.textContent = '—';
       }
     }
+  }
+
+  // ─── AERO RECENT ENTRIES WITH PAGINATION ───
+  let aeroEntries = [];
+  let aeroPage = 0;
+  const AERO_PER_PAGE = 5;
+
+  function renderAeroEntries() {
+    const tbody = document.getElementById('aeroRecentBody');
+    const pageInfo = document.getElementById('aeroPageInfo');
+
+    if (!aeroEntries || aeroEntries.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--carbon-400);font-style:italic;padding:1.5rem;">No feedback submitted yet</td></tr>';
+      pageInfo.textContent = '0 / 0';
+      return;
+    }
+
+    const totalPages = Math.ceil(aeroEntries.length / AERO_PER_PAGE);
+    if (aeroPage >= totalPages) aeroPage = totalPages - 1;
+    if (aeroPage < 0) aeroPage = 0;
+
+    const startIdx = aeroPage * AERO_PER_PAGE;
+    const pageItems = aeroEntries.slice(startIdx, startIdx + AERO_PER_PAGE);
+
+    tbody.innerHTML = '';
+    pageItems.forEach(entry => {
+      const tr = document.createElement('tr');
+      let dateStr = '';
+      try {
+        const d = new Date(entry.timestamp);
+        if (!isNaN(d)) dateStr = String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
+      } catch(e) { dateStr = entry.timestamp.substring(0,5); }
+
+      // Truncate feedback for table display
+      const shortFeedback = (entry.feedback || '\u2014').length > 80
+        ? entry.feedback.substring(0, 80) + '\u2026'
+        : (entry.feedback || '\u2014');
+
+      tr.innerHTML = `
+        <td style="font-family:var(--font-mono);font-size:0.8rem;">${dateStr}</td>
+        <td style="font-size:0.8rem;">${entry.testType || '\u2014'}</td>
+        <td style="font-family:var(--font-mono);font-size:0.8rem;text-align:center;">${entry.stability || '\u2014'}/10</td>
+        <td style="font-family:var(--font-mono);font-size:0.8rem;text-align:center;">${entry.downforce || '\u2014'}/10</td>
+        <td style="font-size:0.8rem;color:var(--carbon-300);">${shortFeedback}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    pageInfo.textContent = (aeroPage + 1) + ' / ' + totalPages;
+  }
+
+  function aeroPrevPage() {
+    if (aeroPage > 0) { aeroPage--; renderAeroEntries(); }
+  }
+
+  function aeroNextPage() {
+    const totalPages = Math.ceil(aeroEntries.length / AERO_PER_PAGE);
+    if (aeroPage < totalPages - 1) { aeroPage++; renderAeroEntries(); }
+  }
+
+  // ─── TELEMETRY RECENT ENTRIES WITH PAGINATION ───
+  let telEntries = [];
+  let telPage = 0;
+  const TEL_PER_PAGE = 5;
+
+  function renderTelEntries() {
+    const tbody = document.getElementById('telRecentBody');
+    const pageInfo = document.getElementById('telPageInfo');
+
+    if (!telEntries || telEntries.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--carbon-400);font-style:italic;padding:1.5rem;">No sessions logged yet</td></tr>';
+      pageInfo.textContent = '0 / 0';
+      return;
+    }
+
+    const totalPages = Math.ceil(telEntries.length / TEL_PER_PAGE);
+    if (telPage >= totalPages) telPage = totalPages - 1;
+    if (telPage < 0) telPage = 0;
+
+    const startIdx = telPage * TEL_PER_PAGE;
+    const pageEntries = telEntries.slice(startIdx, startIdx + TEL_PER_PAGE);
+
+    tbody.innerHTML = '';
+    pageEntries.forEach(entry => {
+      const tr = document.createElement('tr');
+      let dateStr = entry.date || '';
+      try {
+        if (dateStr) {
+          const d = new Date(dateStr);
+          if (!isNaN(d)) dateStr = String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
+        }
+      } catch(e) {}
+
+      tr.innerHTML = `
+        <td style="font-family:var(--font-mono);font-size:0.8rem;">${dateStr}</td>
+        <td>${entry.driver || '\u2014'}</td>
+        <td style="font-family:var(--font-mono);font-size:0.8rem;">${entry.odoStart || '\u2014'}</td>
+        <td style="font-family:var(--font-mono);font-size:0.8rem;">${entry.odoEnd || '\u2014'}</td>
+        <td>${entry.feel060 || '\u2014'}</td>
+        <td>${entry.feel100 || '\u2014'}</td>
+        <td style="font-size:0.8rem;color:var(--carbon-300);">${entry.notes || '\u2014'}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    pageInfo.textContent = (telPage + 1) + ' / ' + totalPages;
+  }
+
+  function telPrevPage() {
+    if (telPage > 0) { telPage--; renderTelEntries(); }
+  }
+
+  function telNextPage() {
+    const totalPages = Math.ceil(telEntries.length / TEL_PER_PAGE);
+    if (telPage < totalPages - 1) { telPage++; renderTelEntries(); }
   }
 
   // ─── INIT: Load live data on page load ───
