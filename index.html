@@ -1262,14 +1262,8 @@
     entries.forEach(entry => {
       const tr = document.createElement('tr');
 
-      // Parse date from timestamp
-      let dateStr = '';
-      try {
-        const d = new Date(entry.timestamp);
-        dateStr = String(d.getMonth() + 1).padStart(2, '0') + '/' + String(d.getDate()).padStart(2, '0');
-      } catch(e) {
-        dateStr = entry.timestamp.substring(0, 5);
-      }
+      // Use date from API (already formatted DD/MM)
+      let dateStr = entry.date || '—';
 
       // Determine severity class
       const sevText = (entry.severity || '').toLowerCase();
@@ -1472,11 +1466,7 @@
     tbody.innerHTML = '';
     pageItems.forEach(entry => {
       const tr = document.createElement('tr');
-      let dateStr = '';
-      try {
-        const d = new Date(entry.timestamp);
-        if (!isNaN(d)) dateStr = String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
-      } catch(e) { dateStr = entry.timestamp.substring(0,5); }
+      let dateStr = entry.date || '—';
 
       // Truncate feedback for table display
       const shortFeedback = (entry.feedback || '\u2014').length > 80
@@ -1530,13 +1520,7 @@
     tbody.innerHTML = '';
     pageEntries.forEach(entry => {
       const tr = document.createElement('tr');
-      let dateStr = entry.date || '';
-      try {
-        if (dateStr) {
-          const d = new Date(dateStr);
-          if (!isNaN(d)) dateStr = String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
-        }
-      } catch(e) {}
+      const dateStr = entry.date || '—';
 
       tr.innerHTML = `
         <td style="font-family:var(--font-mono);font-size:0.8rem;">${dateStr}</td>
